@@ -30,10 +30,15 @@
                 <div class="product-detail">
                     <div class="product-gallery">
                         <div class="main-image">
-                            <% const categoryIcons={ 'fertilizers' : 'flask' , 'seeds' : 'seedling' , 'equipment'
-                                : 'cogs' , 'produce' : 'apple-alt' , 'livestock' : 'horse' , 'other' : 'box' }; %>
-                                <i
-                                    class="fas fa-<%= categoryIcons[product.category] || 'box' %> product-icon-large"></i>
+                            <% if (product.image_url) { %>
+                                <img src="<%= product.image_url %>" alt="<%= product.name %>"
+                                    style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg);">
+                                <% } else { const categoryIcons={ 'fertilizers' : 'flask' , 'seeds' : 'seedling'
+                                    , 'equipment' : 'cogs' , 'produce' : 'apple-alt' , 'livestock' : 'horse' , 'other'
+                                    : 'box' }; %>
+                                    <i
+                                        class="fas fa-<%= categoryIcons[product.category] || 'box' %> product-icon-large"></i>
+                                    <% } %>
                         </div>
                     </div>
 
@@ -58,7 +63,7 @@
                         </div>
 
                         <div class="price-section">
-                            <span class="current-price">$<%= parseFloat(product.price).toFixed(2) %></span>
+                            <span class="current-price">Ksh <%= parseFloat(product.price).toFixed(2) %></span>
                             <% if (product.stock_quantity> 0) { %>
                                 <span class="badge badge-success">In Stock</span>
                                 <% } else { %>

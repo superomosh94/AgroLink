@@ -29,7 +29,29 @@
                         </div>
                         <% } %>
 
-                            <form action="/market/add" method="POST" class="product-form">
+                            <form action="/market/add" method="POST" class="product-form" enctype="multipart/form-data">
+                                <div class="form-section">
+                                    <h2 class="section-heading">
+                                        <i class="fas fa-image"></i> Product Image
+                                    </h2>
+
+                                    <div class="form-group">
+                                        <label for="productImage" class="form-label">Upload Image <span
+                                                class="required">*</span></label>
+                                        <div class="image-upload-wrapper">
+                                            <input type="file" id="productImage" name="productImage"
+                                                class="form-control" accept="image/*"
+                                                onchange="previewImage(this, 'imagePreview')" required>
+                                            <div class="image-preview" id="imagePreview" style="display:none;">
+                                                <img id="preview" src="#" alt="Preview"
+                                                    style="max-width: 300px; border-radius: var(--radius-lg); margin-top: var(--spacing-md);">
+                                            </div>
+                                        </div>
+                                        <small style="color: var(--gray-500);">Maximum file size: 5MB. Accepted formats:
+                                            JPG, PNG, WEBP</small>
+                                    </div>
+                                </div>
+
                                 <div class="form-section">
                                     <h2 class="section-heading">
                                         <i class="fas fa-info-circle"></i> Basic Information

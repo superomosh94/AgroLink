@@ -1,6 +1,34 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
+const multer = require('multer');
+const path = require('path');
+
+// Configure multer for image uploads
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/uploads/products/');
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+    fileFilter: function (req, file, cb) {
+        const filetypes = /jpeg|jpg|png|webp/;
+        const mimetype = filetypes.test(file.mimetype);
+        const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+
+        if (mimetype && extname) {
+            return cb(null, true);
+        }
+        cb(new Error('Only image files are allowed!'));
+    }
+});
 
 // Marketplace listing
 router.get('/', async (req, res) => {
@@ -93,8 +121,8 @@ router.get('/add/new', (req, res) => {
     });
 });
 
-// Add product POST handler
-router.post('/add', async (req, res) => {
+// Add product POST handler with image upload
+router.post('/add', upload.single('productImage'), async (req, res) => {
     if (!req.session.user) {
         return res.redirect('/auth/login');
     }
@@ -114,12 +142,13 @@ router.post('/add', async (req, res) => {
         const isOrganic = req.body.organic === 'on' ? 1 : 0;
         const deliveryAvailable = req.body.delivery === 'on' ? 1 : 0;
         const warrantyIncluded = req.body.warranty === 'on' ? 1 : 0;
+        const imagePath = req.file ? `/uploads/products/${req.file.filename}` : null;
 
         await db.query(`
             INSERT INTO products 
             (seller_id, name, description, category, price, stock_quantity, unit, location, 
-             condition_type, is_organic, delivery_available, warranty_included, status)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'active')
+             condition_type, is_organic, delivery_available, warranty_included, image_url, status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'active')
         `, [
             req.session.user.id,
             productName,
@@ -132,7 +161,8 @@ router.post('/add', async (req, res) => {
             condition || 'new',
             isOrganic,
             deliveryAvailable,
-            warrantyIncluded
+            warrantyIncluded,
+            imagePath
         ]);
 
         res.redirect('/market');

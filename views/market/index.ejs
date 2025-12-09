@@ -77,16 +77,23 @@
                                     %>
                                     <div class="product-card">
                                         <div class="product-image-wrapper">
-                                            <div class="product-image-placeholder">
-                                                <i class="fas fa-<%= categoryIcons[product.category] || 'box' %>"></i>
-                                            </div>
-                                            <span class="product-badge">
-                                                <%= product.category.charAt(0).toUpperCase() + product.category.slice(1)
-                                                    %>
-                                            </span>
-                                            <% if (product.is_organic) { %>
-                                                <span class="organic-badge"><i class="fas fa-leaf"></i> Organic</span>
-                                                <% } %>
+                                            <% if (product.image_url) { %>
+                                                <img src="<%= product.image_url %>" alt="<%= product.name %>"
+                                                    class="product-image">
+                                                <% } else { %>
+                                                    <div class="product-image-placeholder">
+                                                        <i
+                                                            class="fas fa-<%= categoryIcons[product.category] || 'box' %>"></i>
+                                                    </div>
+                                                    <% } %>
+                                                        <span class="product-badge">
+                                                            <%= product.category.charAt(0).toUpperCase() +
+                                                                product.category.slice(1) %>
+                                                        </span>
+                                                        <% if (product.is_organic) { %>
+                                                            <span class="organic-badge"><i class="fas fa-leaf"></i>
+                                                                Organic</span>
+                                                            <% } %>
                                         </div>
 
                                         <div class="product-info">
@@ -113,8 +120,9 @@
                                             </div>
 
                                             <div class="product-footer">
-                                                <span class="product-price">$<%= parseFloat(product.price).toFixed(2) %>
-                                                        </span>
+                                                <span class="product-price">Ksh <%= parseFloat(product.price).toFixed(2)
+                                                        %>
+                                                </span>
                                                 <a href="/market/<%= product.id %>" class="btn btn-primary btn-sm">
                                                     View Details
                                                 </a>

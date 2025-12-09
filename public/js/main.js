@@ -19,6 +19,40 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
+    // Dashboard sidebar toggle
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebar = document.querySelector('.dashboard-sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    if (sidebarToggle && sidebar) {
+        sidebarToggle.addEventListener('click', function () {
+            sidebar.classList.toggle('active');
+            if (sidebarOverlay) {
+                sidebarOverlay.classList.toggle('active');
+            }
+        });
+
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', function () {
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+            });
+        }
+
+        // Close sidebar when clicking nav item on mobile
+        const navItems = sidebar.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', function () {
+                if (window.innerWidth <= 1024) {
+                    sidebar.classList.remove('active');
+                    if (sidebarOverlay) {
+                        sidebarOverlay.classList.remove('active');
+                    }
+                }
+            });
+        });
+    }
 });
 
 // Form validation helpers
@@ -43,3 +77,24 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
+// Image preview for file uploads
+function previewImage(input, previewContainerId) {
+    const previewContainer = document.getElementById(previewContainerId);
+    const previewImg = previewContainer ? previewContainer.querySelector('img') : document.getElementById('preview');
+
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            if (previewContainer) {
+                previewContainer.style.display = 'block';
+            }
+            if (previewImg) {
+                previewImg.src = e.target.result;
+            }
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}

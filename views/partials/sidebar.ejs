@@ -1,0 +1,61 @@
+<aside class="app-sidebar">
+    <div class="sidebar-header">
+        <i class="fas fa-user-circle user-avatar"></i>
+        <div class="user-info">
+            <% if (user) { %>
+                <h3>Welcome Back</h3>
+                <p>
+                    <%= user.fullname %>
+                </p>
+                <span class="user-badge">
+                    <%= user.userType.charAt(0).toUpperCase() + user.userType.slice(1) %>
+                </span>
+                <% } else { %>
+                    <h3>Welcome</h3>
+                    <p>Guest</p>
+                    <% } %>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <a href="/" class="nav-item <%= currentPage === 'home' ? 'active' : '' %>">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="/market" class="nav-item <%= currentPage === 'market' ? 'active' : '' %>">
+            <i class="fas fa-store"></i>
+            <span>Marketplace</span>
+        </a>
+        <% if (user) { %>
+            <a href="/dashboard" class="nav-item <%= currentPage === 'dashboard' ? 'active' : '' %>">
+                <i class="fas fa-chart-line"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="/market/add/new" class="nav-item <%= currentPage === 'add-product' ? 'active' : '' %>">
+                <i class="fas fa-plus-circle"></i>
+                <span>Add Product</span>
+            </a>
+            <a href="/dashboard/settings" class="nav-item <%= currentPage === 'settings' ? 'active' : '' %>">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            <a href="/auth/logout" class="nav-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+            <% } else { %>
+                <a href="/auth/login" class="nav-item <%= currentPage === 'login' ? 'active' : '' %>">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </a>
+                <a href="/auth/register" class="nav-item <%= currentPage === 'register' ? 'active' : '' %>">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Register</span>
+                </a>
+                <% } %>
+                    <a href="/about" class="nav-item <%= currentPage === 'about' ? 'active' : '' %>">
+                        <i class="fas fa-info-circle"></i>
+                        <span>About</span>
+                    </a>
+    </nav>
+</aside>

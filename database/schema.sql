@@ -39,6 +39,7 @@ CREATE TABLE products (
     is_organic BOOLEAN DEFAULT FALSE,
     delivery_available BOOLEAN DEFAULT FALSE,
     warranty_included BOOLEAN DEFAULT FALSE,
+    image_url VARCHAR(255),
     status ENUM('active', 'sold', 'inactive') DEFAULT 'active',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
