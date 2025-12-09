@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AgroLink - Connecting Agricultural Stakeholders">
+    <title>
+        <%= title %>
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+        <main>
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="container">
+                    <div class="hero-content">
+                        <div class="hero-text">
+                            <h1 class="hero-title">
+                                Connect. Trade. <span class="text-gradient">Grow.</span>
+                            </h1>
+                            <p class="hero-description">
+                                AgroLink brings together farmers, suppliers, and buyers on one seamless platform.
+                                Buy and sell agricultural products with confidence.
+                            </p>
+                            <div class="hero-buttons">
+                                <a href="/auth/register" class="btn btn-primary btn-lg">
+                                    Get Started <i class="fas fa-arrow-right"></i>
+                                </a>
+                                <a href="/market" class="btn btn-outline btn-lg">
+                                    Explore Marketplace
+                                </a>
+                            </div>
+                            <div class="hero-stats">
+                                <div class="stat-item">
+                                    <div class="stat-number">10K+</div>
+                                    <div class="stat-label">Active Users</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">50K+</div>
+                                    <div class="stat-label">Products Listed</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">98%</div>
+                                    <div class="stat-label">Satisfaction</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hero-image">
+                            <div class="image-wrapper">
+                                <i class="fas fa-tractor hero-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="features">
+                <div class="container">
+                    <div class="section-header text-center">
+                        <h2 class="section-title">Why Choose AgroLink?</h2>
+                        <p class="section-description">
+                            Empowering agricultural communities with modern technology
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-3">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-handshake"></i>
+                            </div>
+                            <h3 class="feature-title">Trusted Marketplace</h3>
+                            <p class="feature-text">
+                                Connect with verified buyers and sellers in a secure environment.
+                                Every transaction is protected.
+                            </p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h3 class="feature-title">Real-time Analytics</h3>
+                            <p class="feature-text">
+                                Track your sales, manage inventory, and get insights with our
+                                powerful dashboard.
+                            </p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <h3 class="feature-title">Mobile Friendly</h3>
+                            <p class="feature-text">
+                                Access AgroLink anywhere, anytime. Our platform works seamlessly
+                                on all devices.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="cta">
+                <div class="container">
+                    <div class="cta-content">
+                        <h2 class="cta-title">Ready to Transform Your Agricultural Business?</h2>
+                        <p class="cta-text">
+                            Join thousands of farmers and suppliers already thriving on AgroLink
+                        </p>
+                        <a href="/auth/register" class="btn btn-secondary btn-lg">
+                            Start Selling Today <i class="fas fa-rocket"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <%- include('partials/footer') %>
+
+            <script src="/js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+        <main>
+            <section class="hero" style="padding: var(--spacing-3xl) 0;">
+                <div class="container text-center">
+                    <h1 style="color: var(--white); margin-bottom: var(--spacing-lg);">About AgroLink</h1>
+                    <p
+                        style="font-size: var(--font-size-xl); color: var(--gray-200); max-width: 700px; margin: 0 auto;">
+                        Connecting agricultural communities through innovative technology
+                    </p>
+                </div>
+            </section>
+
+            <section style="padding: var(--spacing-3xl) 0;">
+                <div class="container">
+                    <div class="grid grid-cols-2" style="gap: var(--spacing-3xl); align-items: center;">
+                        <div>
+                            <h2>Our Mission</h2>
+                            <p style="color: var(--gray-600); line-height: 1.8;">
+                                AgroLink was founded with a simple yet powerful vision: to bridge the gap between
+                                agricultural producers and buyers. We believe in empowering farmers and suppliers
+                                with modern technology to reach wider markets and grow their businesses sustainably.
+                            </p>
+                            <p style="color: var(--gray-600); line-height: 1.8;">
+                                Our platform provides a trusted marketplace where quality products meet eager buyers,
+                                creating win-win situations for everyone involved in the agricultural supply chain.
+                            </p>
+                        </div>
+                        <div style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); 
+                                border-radius: var(--radius-xl); aspect-ratio: 1; display: flex; align-items: center; 
+                                justify-content: center; box-shadow: var(--shadow-xl);">
+                            <i class="fas fa-handshake" style="font-size: 150px; color: rgba(255, 255, 255, 0.8);"></i>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <%- include('partials/footer') %>
+
+            <script src="/js/main.js"></script>
+</body>
+
+</html>

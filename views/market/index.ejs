@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/market.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <%- include('../partials/header') %>
+
+        <main>
+            <section class="market-hero">
+                <div class="container">
+                    <h1 class="page-title">Marketplace</h1>
+                    <p class="page-subtitle">Discover quality agricultural products from verified sellers</p>
+                </div>
+            </section>
+
+            <section class="market-content">
+                <div class="container">
+                    <form method="GET" action="/market" class="market-filters">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" name="search" placeholder="Search products..." class="search-input"
+                                value="<%= filters.search || '' %>">
+                        </div>
+
+                        <div class="filter-group">
+                            <select name="category" class="filter-select" onchange="this.form.submit()">
+                                <option value="">All Categories</option>
+                                <option value="seeds" <%=filters.category==='seeds' ? 'selected' : '' %>>Seeds</option>
+                                <option value="fertilizers" <%=filters.category==='fertilizers' ? 'selected' : '' %>
+                                    >Fertilizers</option>
+                                <option value="equipment" <%=filters.category==='equipment' ? 'selected' : '' %>
+                                    >Equipment</option>
+                                <option value="produce" <%=filters.category==='produce' ? 'selected' : '' %>>Fresh
+                                    Produce</option>
+                                <option value="livestock" <%=filters.category==='livestock' ? 'selected' : '' %>
+                                    >Livestock</option>
+                            </select>
+
+                            <select name="sort" class="filter-select" onchange="this.form.submit()">
+                                <option value="">Sort By: Latest</option>
+                                <option value="price-low" <%=filters.sort==='price-low' ? 'selected' : '' %>>Price: Low
+                                    to High</option>
+                                <option value="price-high" <%=filters.sort==='price-high' ? 'selected' : '' %>>Price:
+                                    High to Low</option>
+                            </select>
+                        </div>
+                    </form>
+
+                    <% if (products.length===0) { %>
+                        <div class="no-products">
+                            <i class="fas fa-box-open"
+                                style="font-size: 80px; color: var(--gray-400); margin-bottom: var(--spacing-lg);"></i>
+                            <h3>No Products Found</h3>
+                            <p>Try adjusting your filters or search terms</p>
+                        </div>
+                        <% } else { %>
+                            <div class="products-grid">
+                                <% products.forEach(product=> {
+                                    const categoryIcons = {
+                                    'fertilizers': 'flask',
+                                    'seeds': 'seedling',
+                                    'equipment': 'cogs',
+                                    'produce': 'apple-alt',
+                                    'livestock': 'horse',
+                                    'other': 'box'
+                                    };
+                                    %>
+                                    <div class="product-card">
+                                        <div class="product-image-wrapper">
+                                            <div class="product-image-placeholder">
+                                                <i class="fas fa-<%= categoryIcons[product.category] || 'box' %>"></i>
+                                            </div>
+                                            <span class="product-badge">
+                                                <%= product.category.charAt(0).toUpperCase() + product.category.slice(1)
+                                                    %>
+                                            </span>
+                                            <% if (product.is_organic) { %>
+                                                <span class="organic-badge"><i class="fas fa-leaf"></i> Organic</span>
+                                                <% } %>
+                                        </div>
+
+                                        <div class="product-info">
+                                            <h3 class="product-name">
+                                                <%= product.name %>
+                                            </h3>
+                                            <div class="product-seller">
+                                                <i class="fas fa-store"></i>
+                                                <span>
+                                                    <%= product.seller_name %>
+                                                </span>
+                                            </div>
+
+                                            <div class="product-meta">
+                                                <span class="meta-item">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                    <%= product.location %>
+                                                </span>
+                                                <span class="meta-item">
+                                                    <i class="fas fa-box"></i>
+                                                    <%= product.stock_quantity %>
+                                                        <%= product.unit %>
+                                                </span>
+                                            </div>
+
+                                            <div class="product-footer">
+                                                <span class="product-price">$<%= parseFloat(product.price).toFixed(2) %>
+                                                        </span>
+                                                <a href="/market/<%= product.id %>" class="btn btn-primary btn-sm">
+                                                    View Details
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% }); %>
+                            </div>
+                            <% } %>
+                </div>
+            </section>
+        </main>
+
+        <%- include('../partials/footer') %>
+
+            <script src="/js/main.js"></script>
+</body>
+
+</html>

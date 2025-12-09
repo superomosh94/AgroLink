@@ -1,0 +1,132 @@
+const express = require('express');
+const router = express.Router();
+const db = require('../config/db');
+
+// Middleware to check if user is authenticated
+const isAuthenticated = (req, res, next) => {
+    if (req.session.user) {
+        next();
+    } else {
+        res.redirect('/auth/login');
+    }
+};
+
+// Dashboard
+router.get('/', isAuthenticated, async (req, res) => {
+    try {
+        const userId = req.session.user.id;
+        const userType = req.session.user.userType;
+
+        // Get user's products
+        const [products] = await db.query(`
+            SELECT * FROM products 
+            WHERE seller_id = ? 
+            ORDER BY created_at DESC 
+            LIMIT 10
+        `, [userId]);
+
+        // Get product count
+        const [productCount] = await db.query(`
+            SELECT COUNT(*) as count FROM products WHERE seller_id = ?
+        `, [userId]);
+
+        // Get total sales (from orders where user is seller)
+        const [salesData] = await db.query(`
+            SELECT COALESCE(SUM(total_amount), 0) as total_sales, COUNT(*) as order_count
+            FROM orders 
+            WHERE seller_id = ?
+        `, [userId]);
+
+        // Get pending orders
+        const [pendingOrders] = await db.query(`
+            SELECT COUNT(*) as count FROM orders 
+            WHERE seller_id = ? AND status = 'pending'
+        `, [userId]);
+
+        // Get recent activity
+        const [recentOrders] = await db.query(`
+            SELECT o.*, p.name as product_name
+            FROM orders o
+            LEFT JOIN order_items oi ON o.id = oi.order_id
+            LEFT JOIN products p ON oi.product_id = p.id
+            WHERE o.seller_id = ?
+            ORDER BY o.created_at DESC
+            LIMIT 5
+        `, [userId]);
+
+        res.render('dashboard/index', {
+            title: 'Dashboard - AgroLink',
+            stats: {
+                totalProducts: productCount[0].count,
+                totalSales: salesData[0].total_sales,
+                pendingOrders: pendingOrders[0].count,
+                orderCount: salesData[0].order_count
+            },
+            products,
+            recentOrders
+        });
+    } catch (error) {
+        console.error('Dashboard error:', error);
+        res.render('error', {
+            title: 'Error',
+            message: 'Unable to load dashboard'
+        });
+    }
+});
+
+// User settings page
+router.get('/settings', isAuthenticated, async (req, res) => {
+    try {
+        const [users] = await db.query('SELECT * FROM users WHERE id = ?', [req.session.user.id]);
+
+        res.render('dashboard/settings', {
+            title: 'Settings - AgroLink',
+            userData: users[0],
+            error: null,
+            success: null
+        });
+    } catch (error) {
+        console.error('Settings error:', error);
+        res.render('error', {
+            title: 'Error',
+            message: 'Unable to load settings'
+        });
+    }
+});
+
+// Update user profile
+router.post('/settings', isAuthenticated, async (req, res) => {
+    try {
+        const { fullname, phone } = req.body;
+
+        await db.query(
+            'UPDATE users SET fullname = ?, phone = ? WHERE id = ?',
+            [fullname, phone, req.session.user.id]
+        );
+
+        // Update session
+        req.session.user.fullname = fullname;
+
+        const [users] = await db.query('SELECT * FROM users WHERE id = ?', [req.session.user.id]);
+
+        res.render('dashboard/settings', {
+            title: 'Settings - AgroLink',
+            userData: users[0],
+            error: null,
+            success: 'Profile updated successfully!'
+        });
+    } catch (error) {
+        console.error('Update settings error:', error);
+
+        const [users] = await db.query('SELECT * FROM users WHERE id = ?', [req.session.user.id]);
+
+        res.render('dashboard/settings', {
+            title: 'Settings - AgroLink',
+            userData: users[0],
+            error: 'Failed to update profile',
+            success: null
+        });
+    }
+});
+
+module.exports = router;

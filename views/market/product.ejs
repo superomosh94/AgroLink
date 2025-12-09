@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/product.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <%- include('../partials/header') %>
+
+        <main>
+            <div class="container">
+                <nav class="breadcrumb">
+                    <a href="/">Home</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <a href="/market">Marketplace</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>
+                        <%= product.name %>
+                    </span>
+                </nav>
+
+                <div class="product-detail">
+                    <div class="product-gallery">
+                        <div class="main-image">
+                            <% const categoryIcons={ 'fertilizers' : 'flask' , 'seeds' : 'seedling' , 'equipment'
+                                : 'cogs' , 'produce' : 'apple-alt' , 'livestock' : 'horse' , 'other' : 'box' }; %>
+                                <i
+                                    class="fas fa-<%= categoryIcons[product.category] || 'box' %> product-icon-large"></i>
+                        </div>
+                    </div>
+
+                    <div class="product-details">
+                        <span class="product-category-badge">
+                            <%= product.category.charAt(0).toUpperCase() + product.category.slice(1) %>
+                        </span>
+                        <h1 class="product-title">
+                            <%= product.name %>
+                        </h1>
+
+                        <div class="product-meta">
+                            <div class="product-seller-info">
+                                <i class="fas fa-store"></i>
+                                <strong>
+                                    <%= product.seller_name %>
+                                </strong>
+                                <span class="verified-badge">
+                                    <i class="fas fa-check-circle"></i> Verified Seller
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="price-section">
+                            <span class="current-price">$<%= parseFloat(product.price).toFixed(2) %></span>
+                            <% if (product.stock_quantity> 0) { %>
+                                <span class="badge badge-success">In Stock</span>
+                                <% } else { %>
+                                    <span class="badge badge-warning">Out of Stock</span>
+                                    <% } %>
+                        </div>
+
+                        <div class="product-description">
+                            <h3>Product Description</h3>
+                            <p>
+                                <%= product.description %>
+                            </p>
+
+                            <ul class="product-features">
+                                <% if (product.is_organic) { %>
+                                    <li><i class="fas fa-check"></i> Certified Organic</li>
+                                    <% } %>
+                                        <% if (product.delivery_available) { %>
+                                            <li><i class="fas fa-check"></i> Delivery Available</li>
+                                            <% } %>
+                                                <% if (product.warranty_included) { %>
+                                                    <li><i class="fas fa-check"></i> Warranty Included</li>
+                                                    <% } %>
+                                                        <li><i class="fas fa-check"></i> Condition: <%=
+                                                                product.condition_type.charAt(0).toUpperCase() +
+                                                                product.condition_type.slice(1) %>
+                                                        </li>
+                            </ul>
+                        </div>
+
+                        <div class="product-specs">
+                            <h3>Specifications</h3>
+                            <div class="specs-grid">
+                                <div class="spec-item">
+                                    <span class="spec-label">Unit:</span>
+                                    <span class="spec-value">
+                                        <%= product.unit %>
+                                    </span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Category:</span>
+                                    <span class="spec-value">
+                                        <%= product.category.charAt(0).toUpperCase() + product.category.slice(1) %>
+                                    </span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Stock:</span>
+                                    <span
+                                        class="spec-value <%= product.stock_quantity > 0 ? 'text-success' : 'text-error' %>">
+                                        <%= product.stock_quantity %>
+                                            <%= product.unit %> available
+                                    </span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Location:</span>
+                                    <span class="spec-value">
+                                        <%= product.location %>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-actions">
+                            <div class="quantity-selector">
+                                <label>Quantity:</label>
+                                <div class="quantity-controls">
+                                    <button class="qty-btn" onclick="decrementQty()">-</button>
+                                    <input type="number" value="1" min="1" max="<%= product.stock_quantity %>"
+                                        class="qty-input" id="quantity">
+                                    <button class="qty-btn" onclick="incrementQty()">+</button>
+                                </div>
+                            </div>
+
+                            <% if (product.stock_quantity> 0) { %>
+                                <button class="btn btn-primary btn-lg">
+                                    <i class="fas fa-shopping-cart"></i> Contact Seller
+                                </button>
+                                <% } else { %>
+                                    <button class="btn btn-primary btn-lg" disabled>
+                                        <i class="fas fa-times"></i> Out of Stock
+                                    </button>
+                                    <% } %>
+                                        <a href="mailto:<%= product.seller_email %>" class="btn btn-secondary btn-lg">
+                                            <i class="fas fa-envelope"></i> Email Seller
+                                        </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <%- include('../partials/footer') %>
+
+            <script src="/js/main.js"></script>
+            <script>
+                function incrementQty() {
+                    const input = document.getElementById('quantity');
+                    const max = parseInt(input.max);
+                    if (parseInt(input.value) < max) {
+                        input.value = parseInt(input.value) + 1;
+                    }
+                }
+
+                function decrementQty() {
+                    const input = document.getElementById('quantity');
+                    if (parseInt(input.value) > 1) {
+                        input.value = parseInt(input.value) - 1;
+                    }
+                }
+            </script>
+</body>
+
+</html>

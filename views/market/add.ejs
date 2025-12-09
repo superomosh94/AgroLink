@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/add-product.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <%- include('../partials/header') %>
+
+        <main>
+            <div class="container">
+                <div class="page-header">
+                    <h1 class="page-title">Add New Product</h1>
+                    <p class="page-subtitle">List your agricultural product on the marketplace</p>
+                </div>
+
+                <div class="form-container">
+                    <% if (error) { %>
+                        <div class="alert alert-error" style="margin-bottom: var(--spacing-xl);">
+                            <%= error %>
+                        </div>
+                        <% } %>
+
+                            <form action="/market/add" method="POST" class="product-form">
+                                <div class="form-section">
+                                    <h2 class="section-heading">
+                                        <i class="fas fa-info-circle"></i> Basic Information
+                                    </h2>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="productName" class="form-label">Product Name <span
+                                                    class="required">*</span></label>
+                                            <input type="text" id="productName" name="productName" class="form-control"
+                                                placeholder="E.g., Organic Corn Seeds" required>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="category" class="form-label">Category <span
+                                                    class="required">*</span></label>
+                                            <select id="category" name="category" class="form-control" required>
+                                                <option value="">Select Category</option>
+                                                <option value="seeds">Seeds</option>
+                                                <option value="fertilizers">Fertilizers</option>
+                                                <option value="equipment">Equipment</option>
+                                                <option value="produce">Fresh Produce</option>
+                                                <option value="livestock">Livestock</option>
+                                                <option value="other">Other</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="description" class="form-label">Description <span
+                                                class="required">*</span></label>
+                                        <textarea id="description" name="description" class="form-control" rows="5"
+                                            placeholder="Describe your product in detail..." required></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-section">
+                                    <h2 class="section-heading">
+                                        <i class="fas fa-dollar-sign"></i> Pricing & Stock
+                                    </h2>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="price" class="form-label">Price (USD) <span
+                                                    class="required">*</span></label>
+                                            <div class="input-with-icon">
+                                                <span class="input-icon">$</span>
+                                                <input type="number" id="price" name="price"
+                                                    class="form-control with-icon" placeholder="0.00" step="0.01"
+                                                    min="0" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="stock" class="form-label">Stock Quantity <span
+                                                    class="required">*</span></label>
+                                            <input type="number" id="stock" name="stock" class="form-control"
+                                                placeholder="0" min="0" required>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="unit" class="form-label">Unit <span
+                                                    class="required">*</span></label>
+                                            <select id="unit" name="unit" class="form-control" required>
+                                                <option value="">Select Unit</option>
+                                                <option value="kg">Kilogram (kg)</option>
+                                                <option value="lb">Pound (lb)</option>
+                                                <option value="piece">Piece</option>
+                                                <option value="pack">Pack</option>
+                                                <option value="bag">Bag</option>
+                                                <option value="liter">Liter</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-section">
+                                    <h2 class="section-heading">
+                                        <i class="fas fa-map-marker-alt"></i> Location & Details
+                                    </h2>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="location" class="form-label">Location <span
+                                                    class="required">*</span></label>
+                                            <input type="text" id="location" name="location" class="form-control"
+                                                placeholder="City, State" required>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="condition" class="form-label">Condition</label>
+                                            <select id="condition" name="condition" class="form-control">
+                                                <option value="new">New</option>
+                                                <option value="used">Used</option>
+                                                <option value="refurbished">Refurbished</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Additional Features</label>
+                                        <div class="checkbox-group">
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="organic">
+                                                <span>Organic Certified</span>
+                                            </label>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="delivery">
+                                                <span>Delivery Available</span>
+                                            </label>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="warranty">
+                                                <span>Warranty Included</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="button" class="btn btn-outline" onclick="window.history.back()">
+                                        <i class="fas fa-times"></i> Cancel
+                                    </button>
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-check"></i> Publish Product
+                                    </button>
+                                </div>
+                            </form>
+                </div>
+            </div>
+        </main>
+
+        <%- include('../partials/footer') %>
+
+            <script src="/js/main.js"></script>
+</body>
+
+</html>
