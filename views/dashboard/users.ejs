@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <%- include('../partials/header') %>
+
+        <main>
+            <div class="dashboard-container">
+                <%- include('../partials/sidebar', { page: 'users' }) %>
+
+                    <div class="dashboard-content">
+                        <div class="dashboard-header">
+                            <h1>Manage Users</h1>
+                        </div>
+
+                        <div class="dashboard-section">
+                            <div class="products-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Full Name</th>
+                                            <th>Email</th>
+                                            <th>Role</th>
+                                            <th>Joined</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% users.forEach(userData=> { %>
+                                            <tr>
+                                                <td>#<%= userData.id %>
+                                                </td>
+                                                <td>
+                                                    <div class="user-cell">
+                                                        <i class="fas fa-user-circle user-avatar-sm"
+                                                            style="color: var(--gray-400);"></i>
+                                                        <strong>
+                                                            <%= userData.fullname %>
+                                                        </strong>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <%= userData.email %>
+                                                </td>
+                                                <td>
+                                                    <span class="badge" style="
+                                                        background: var(--gray-100); 
+                                                        color: var(--gray-700);
+                                                        border: 1px solid var(--gray-300);
+                                                    ">
+                                                        <%= userData.user_type.charAt(0).toUpperCase() +
+                                                            userData.user_type.slice(1) %>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <%= new Date(userData.created_at).toLocaleDateString() %>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline text-error" title="Ban User"
+                                                        onclick="alert('Ban functionality not implemented yet')">
+                                                        <i class="fas fa-ban"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+
+            <!-- Mobile Sidebar Toggle -->
+            <button class="mobile-sidebar-toggle" id="sidebarToggle" aria-label="Toggle Sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        </main>
+
+        <script src="/js/main.js"></script>
+</body>
+
+</html>

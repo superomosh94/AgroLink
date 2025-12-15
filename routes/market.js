@@ -110,6 +110,44 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+// Edit product page
+router.get('/:id/edit', async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/auth/login');
+    }
+
+    try {
+        const productId = req.params.id;
+        const userId = req.session.user.id;
+
+        // Check ownership
+        const [products] = await db.query('SELECT * FROM products WHERE id = ? AND seller_id = ?', [productId, userId]);
+
+        if (products.length === 0) {
+            // Check if product exists but belongs to someone else
+            const [exists] = await db.query('SELECT id FROM products WHERE id = ?', [productId]);
+            if (exists.length > 0) {
+                return res.status(403).render('error', { title: 'Unauthorized', message: 'You can only edit your own products' });
+            }
+            return res.status(404).render('404', { title: 'Product Not Found' });
+        }
+
+        const product = products[0];
+
+        res.render('market/edit', {
+            title: `Edit ${product.name} - AgroLink`,
+            product,
+            error: null
+        });
+    } catch (error) {
+        console.error('Edit page error:', error);
+        res.render('error', {
+            title: 'Error',
+            message: 'Unable to load edit page'
+        });
+    }
+});
+
 // Add product page
 router.get('/add/new', (req, res) => {
     if (!req.session.user) {

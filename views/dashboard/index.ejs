@@ -17,202 +17,174 @@
 
         <main>
             <div class="dashboard-container">
-                <aside class="dashboard-sidebar">
-                    <div class="sidebar-header">
-                        <i class="fas fa-user-circle user-avatar"></i>
-                        <div class="user-info">
-                            <h3>Welcome Back</h3>
-                            <p>
-                                <%= user.fullname %>
-                            </p>
-                            <span class="user-badge">
-                                <%= user.userType.charAt(0).toUpperCase() + user.userType.slice(1) %>
-                            </span>
-                        </div>
-                    </div>
+                <%- include('../partials/sidebar', { page: 'overview' }) %>
 
-                    <nav class="sidebar-nav">
-                        <a href="/dashboard" class="nav-item active">
-                            <i class="fas fa-chart-line"></i>
-                            <span>Overview</span>
-                        </a>
-                        <a href="/market" class="nav-item">
-                            <i class="fas fa-store"></i>
-                            <span>Marketplace</span>
-                        </a>
-                        <a href="/market/add/new" class="nav-item">
-                            <i class="fas fa-plus-circle"></i>
-                            <span>Add Product</span>
-                        </a>
-                        <a href="/auth/logout" class="nav-item">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>Logout</span>
-                        </a>
-                    </nav>
-                </aside>
-
-                <div class="dashboard-content">
-                    <div class="dashboard-header">
-                        <h1>Dashboard Overview</h1>
-                        <a href="/market/add/new" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Add New Product
-                        </a>
-                    </div>
-
-                    <!-- Stats Cards -->
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon stat-icon-primary">
-                                <i class="fas fa-box"></i>
-                            </div>
-                            <div class="stat-details">
-                                <span class="stat-label">Total Products</span>
-                                <span class="stat-value">
-                                    <%= stats.totalProducts %>
-                                </span>
-                                <span class="stat-change">
-                                    <i class="fas fa-info-circle"></i> Listed products
-                                </span>
-                            </div>
+                    <div class="dashboard-content">
+                        <div class="dashboard-header">
+                            <h1>Dashboard Overview</h1>
+                            <a href="/market/add/new" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Add New Product
+                            </a>
                         </div>
 
-                        <div class="stat-card">
-                            <div class="stat-icon stat-icon-success">
-                                <i class="fas fa-dollar-sign"></i>
-                            </div>
-                            <div class="stat-details">
-                                <span class="stat-label">Total Sales</span>
-                                <span class="stat-value">Ksh <%= parseFloat(stats.totalSales).toFixed(2) %></span>
-                                <span class="stat-change">
-                                    <i class="fas fa-shopping-cart"></i>
-                                    <%= stats.orderCount %> orders
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="stat-card">
-                            <div class="stat-icon stat-icon-warning">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                            <div class="stat-details">
-                                <span class="stat-label">Pending Orders</span>
-                                <span class="stat-value">
-                                    <%= stats.pendingOrders %>
-                                </span>
-                                <span class="stat-change">
-                                    <i class="fas fa-hourglass-half"></i> Awaiting action
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="stat-card">
-                            <div class="stat-icon stat-icon-info">
-                                <i class="fas fa-chart-line"></i>
-                            </div>
-                            <div class="stat-details">
-                                <span class="stat-label">Growth</span>
-                                <span class="stat-value">
-                                    <%= products.length %>
-                                </span>
-                                <span class="stat-change positive">
-                                    <i class="fas fa-arrow-up"></i> Active listings
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- My Products -->
-                    <div class="dashboard-section">
-                        <h2 class="section-title">My Products</h2>
-                        <% if (products.length===0) { %>
-                            <div class="empty-state">
-                                <i class="fas fa-box-open"></i>
-                                <h3>No Products Yet</h3>
-                                <p>Start selling by adding your first product</p>
-                                <a href="/market/add/new" class="btn btn-primary">
-                                    <i class="fas fa-plus"></i> Add Product
-                                </a>
-                            </div>
-                            <% } else { %>
-                                <div class="products-table">
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Product</th>
-                                                <th>Category</th>
-                                                <th>Price</th>
-                                                <th>Stock</th>
-                                                <th>Status</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <% products.forEach(product=> { %>
-                                                <tr>
-                                                    <td>
-                                                        <strong>
-                                                            <%= product.name %>
-                                                        </strong>
-                                                    </td>
-                                                    <td>
-                                                        <%= product.category.charAt(0).toUpperCase() +
-                                                            product.category.slice(1) %>
-                                                    </td>
-                                                    <td>Ksh <%= parseFloat(product.price).toFixed(2) %>
-                                                    </td>
-                                                    <td>
-                                                        <%= product.stock_quantity %>
-                                                            <%= product.unit %>
-                                                    </td>
-                                                    <td>
-                                                        <span
-                                                            class="badge badge-<%= product.status === 'active' ? 'success' : 'warning' %>">
-                                                            <%= product.status.charAt(0).toUpperCase() +
-                                                                product.status.slice(1) %>
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <a href="/market/<%= product.id %>"
-                                                            class="btn btn-sm btn-outline">
-                                                            <i class="fas fa-eye"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <% }); %>
-                                        </tbody>
-                                    </table>
+                        <!-- Stats Cards -->
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon stat-icon-primary">
+                                    <i class="fas fa-box"></i>
                                 </div>
-                                <% } %>
-                    </div>
+                                <div class="stat-details">
+                                    <span class="stat-label">Total Products</span>
+                                    <span class="stat-value">
+                                        <%= stats.totalProducts %>
+                                    </span>
+                                    <span class="stat-change">
+                                        <i class="fas fa-info-circle"></i> Listed products
+                                    </span>
+                                </div>
+                            </div>
 
-                    <!-- Recent Activity -->
-                    <% if (recentOrders.length> 0) { %>
-                        <div class="dashboard-section">
-                            <h2 class="section-title">Recent Orders</h2>
-                            <div class="activity-list">
-                                <% recentOrders.forEach(order=> { %>
-                                    <div class="activity-item">
-                                        <div class="activity-icon activity-icon-success">
-                                            <i class="fas fa-shopping-cart"></i>
-                                        </div>
-                                        <div class="activity-content">
-                                            <p class="activity-text">
-                                                <strong>Order #<%= order.id %></strong>
-                                                <% if (order.product_name) { %> - <%= order.product_name %>
-                                                        <% } %>
-                                            </p>
-                                            <span class="activity-time">
-                                                <%= new Date(order.created_at).toLocaleDateString() %>
-                                            </span>
-                                        </div>
-                                        <span class="activity-amount text-success">Ksh <%=
-                                                parseFloat(order.total_amount).toFixed(2) %></span>
-                                    </div>
-                                    <% }); %>
+                            <div class="stat-card">
+                                <div class="stat-icon stat-icon-success">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <span class="stat-label">Total Sales</span>
+                                    <span class="stat-value">Ksh <%= parseFloat(stats.totalSales).toFixed(2) %></span>
+                                    <span class="stat-change">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        <%= stats.orderCount %> orders
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="stat-card">
+                                <div class="stat-icon stat-icon-warning">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <span class="stat-label">Pending Orders</span>
+                                    <span class="stat-value">
+                                        <%= stats.pendingOrders %>
+                                    </span>
+                                    <span class="stat-change">
+                                        <i class="fas fa-hourglass-half"></i> Awaiting action
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="stat-card">
+                                <div class="stat-icon stat-icon-info">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <span class="stat-label">Growth</span>
+                                    <span class="stat-value">
+                                        <%= products.length %>
+                                    </span>
+                                    <span class="stat-change positive">
+                                        <i class="fas fa-arrow-up"></i> Active listings
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                        <% } %>
-                </div>
+
+                        <!-- My Products -->
+                        <div class="dashboard-section">
+                            <h2 class="section-title">My Products</h2>
+                            <% if (products.length===0) { %>
+                                <div class="empty-state">
+                                    <i class="fas fa-box-open"></i>
+                                    <h3>No Products Yet</h3>
+                                    <p>Start selling by adding your first product</p>
+                                    <a href="/market/add/new" class="btn btn-primary">
+                                        <i class="fas fa-plus"></i> Add Product
+                                    </a>
+                                </div>
+                                <% } else { %>
+                                    <div class="products-table">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Product</th>
+                                                    <th>Category</th>
+                                                    <th>Price</th>
+                                                    <th>Stock</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% products.forEach(product=> { %>
+                                                    <tr>
+                                                        <td>
+                                                            <strong>
+                                                                <%= product.name %>
+                                                            </strong>
+                                                        </td>
+                                                        <td>
+                                                            <%= product.category.charAt(0).toUpperCase() +
+                                                                product.category.slice(1) %>
+                                                        </td>
+                                                        <td>Ksh <%= parseFloat(product.price).toFixed(2) %>
+                                                        </td>
+                                                        <td>
+                                                            <%= product.stock_quantity %>
+                                                                <%= product.unit %>
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="badge badge-<%= product.status === 'active' ? 'success' : 'warning' %>">
+                                                                <%= product.status.charAt(0).toUpperCase() +
+                                                                    product.status.slice(1) %>
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <a href="/market/<%= product.id %>"
+                                                                class="btn btn-sm btn-outline" title="View">
+                                                                <i class="fas fa-eye"></i>
+                                                            </a>
+                                                            <a href="/market/<%= product.id %>/edit"
+                                                                class="btn btn-sm btn-outline" title="Edit">
+                                                                <i class="fas fa-edit"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    <% }); %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <% } %>
+                        </div>
+
+                        <!-- Recent Activity -->
+                        <% if (recentOrders.length> 0) { %>
+                            <div class="dashboard-section">
+                                <h2 class="section-title">Recent Orders</h2>
+                                <div class="activity-list">
+                                    <% recentOrders.forEach(order=> { %>
+                                        <div class="activity-item">
+                                            <div class="activity-icon activity-icon-success">
+                                                <i class="fas fa-shopping-cart"></i>
+                                            </div>
+                                            <div class="activity-content">
+                                                <p class="activity-text">
+                                                    <strong>Order #<%= order.id %></strong>
+                                                    <% if (order.product_name) { %> - <%= order.product_name %>
+                                                            <% } %>
+                                                </p>
+                                                <span class="activity-time">
+                                                    <%= new Date(order.created_at).toLocaleDateString() %>
+                                                </span>
+                                            </div>
+                                            <span class="activity-amount text-success">Ksh <%=
+                                                    parseFloat(order.total_amount).toFixed(2) %></span>
+                                        </div>
+                                        <% }); %>
+                                </div>
+                            </div>
+                            <% } %>
+                    </div>
             </div>
 
             <!-- Mobile Sidebar Toggle -->

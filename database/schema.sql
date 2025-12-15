@@ -78,12 +78,12 @@ CREATE TABLE order_items (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Insert sample data for testing
--- Password for all users: the password that corresponds to hash '$2b$10$ju6Akc2NtVAca6tuhkrQseiGJL0Lya38t8UlhfgTMCA5SKHoxRSHW'
+-- Password for all users: password123
 INSERT INTO users (fullname, email, phone, password_hash, user_type) VALUES
-('Admin User', 'admin@agrolink.com', '+1-555-0100', '$2b$10$ju6Akc2NtVAca6tuhkrQseiGJL0Lya38t8UlhfgTMCA5SKHoxRSHW', 'admin'),
-('John Farmer', 'farmer@agrolink.com', '+1-555-0101', '$2b$10$ju6Akc2NtVAca6tuhkrQseiGJL0Lya38t8UlhfgTMCA5SKHoxRSHW', 'farmer'),
-('Sarah Buyer', 'buyer@agrolink.com', '+1-555-0102', '$2b$10$ju6Akc2NtVAca6tuhkrQseiGJL0Lya38t8UlhfgTMCA5SKHoxRSHW', 'buyer'),
-('Mike Supplier', 'supplier@agrolink.com', '+1-555-0103', '$2b$10$ju6Akc2NtVAca6tuhkrQseiGJL0Lya38t8UlhfgTMCA5SKHoxRSHW', 'supplier');
+('Admin User', 'admin@agrolink.com', '+1-555-0100', '$2a$10$3ZzafuO2p1Dcoq/UroUe6OECWBruiHgYSImavrntdZx.C.hwopl/O', 'admin'),
+('John Farmer', 'farmer@agrolink.com', '+1-555-0101', '$2a$10$3ZzafuO2p1Dcoq/UroUe6OECWBruiHgYSImavrntdZx.C.hwopl/O', 'farmer'),
+('Sarah Buyer', 'buyer@agrolink.com', '+1-555-0102', '$2a$10$3ZzafuO2p1Dcoq/UroUe6OECWBruiHgYSImavrntdZx.C.hwopl/O', 'buyer'),
+('Mike Supplier', 'supplier@agrolink.com', '+1-555-0103', '$2a$10$3ZzafuO2p1Dcoq/UroUe6OECWBruiHgYSImavrntdZx.C.hwopl/O', 'supplier');
 
 INSERT INTO products (seller_id, name, description, category, price, stock_quantity, unit, location, is_organic, delivery_available) VALUES
 (2, 'Organic Fertilizer', 'High-quality organic fertilizer for all crops. Rich in nutrients and perfect for sustainable farming.', 'fertilizers', 45.99, 100, 'bag', 'Iowa, USA', TRUE, TRUE),

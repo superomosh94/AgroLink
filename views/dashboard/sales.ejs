@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <%- include('../partials/header') %>
+
+        <main>
+            <div class="dashboard-container">
+                <%- include('../partials/sidebar', { page: 'sales' }) %>
+
+                    <div class="dashboard-content">
+                        <div class="dashboard-header">
+                            <h1>Sales & Orders</h1>
+                        </div>
+
+                        <div class="dashboard-section">
+                            <% if (orders.length===0) { %>
+                                <div class="empty-state">
+                                    <i class="fas fa-receipt"></i>
+                                    <h3>No Sales Yet</h3>
+                                    <p>When you make sales, they will appear here.</p>
+                                </div>
+                                <% } else { %>
+                                    <div class="products-table">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Order ID</th>
+                                                    <th>Product</th>
+                                                    <th>Buyer</th>
+                                                    <th>Amount</th>
+                                                    <th>Status</th>
+                                                    <th>Date</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% orders.forEach(order=> { %>
+                                                    <tr>
+                                                        <td>#<%= order.id %>
+                                                        </td>
+                                                        <td>
+                                                            <%= order.product_name %>
+                                                        </td>
+                                                        <td>
+                                                            <div class="user-cell">
+                                                                <strong>
+                                                                    <%= order.buyer_name %>
+                                                                </strong>
+                                                                <br>
+                                                                <small>
+                                                                    <%= order.buyer_email %>
+                                                                </small>
+                                                            </div>
+                                                        </td>
+                                                        <td>Ksh <%= parseFloat(order.total_amount).toFixed(2) %>
+                                                        </td>
+                                                        <td>
+                                                            <span class="badge badge-<%= 
+                                                        order.status === 'completed' ? 'success' : 
+                                                        order.status === 'pending' ? 'warning' : 'info' %>">
+                                                                <%= order.status.charAt(0).toUpperCase() +
+                                                                    order.status.slice(1) %>
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <%= new Date(order.created_at).toLocaleDateString() %>
+                                                        </td>
+                                                        <td>
+                                                            <div class="action-buttons">
+                                                                <button class="btn btn-sm btn-outline"
+                                                                    onclick="alert('View Details not implemented')">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <% }); %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <% } %>
+                        </div>
+                    </div>
+            </div>
+
+            <!-- Mobile Sidebar Toggle -->
+            <button class="mobile-sidebar-toggle" id="sidebarToggle" aria-label="Toggle Sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        </main>
+
+        <script src="/js/main.js"></script>
+</body>
+
+</html>

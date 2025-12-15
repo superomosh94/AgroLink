@@ -7,6 +7,7 @@
     background: var(--white);
     border-radius: var(--radius-md);
     font-size: var(--font-size-sm);
+    color: var(--charcoal-black);
 }
 
 .breadcrumb a {
@@ -55,6 +56,7 @@
     padding: var(--spacing-2xl);
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-md);
+    color: var(--charcoal-black);
 }
 
 .product-category-badge {
@@ -192,6 +194,7 @@
     padding: var(--spacing-md);
     background: var(--gray-100);
     border-radius: var(--radius-md);
+    color: var(--charcoal-black);
 }
 
 .spec-label {

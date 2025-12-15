@@ -129,4 +129,73 @@ router.post('/settings', isAuthenticated, async (req, res) => {
     }
 });
 
+// Sales and Orders page (Shared by Seller and Admin)
+router.get('/sales', isAuthenticated, async (req, res) => {
+    try {
+        const userId = req.session.user.id;
+        const userType = req.session.user.userType;
+
+        let query = `
+            SELECT o.*, p.name as product_name, u.fullname as buyer_name, u.email as buyer_email
+            FROM orders o
+            LEFT JOIN order_items oi ON o.id = oi.order_id
+            LEFT JOIN products p ON oi.product_id = p.id
+            LEFT JOIN users u ON o.buyer_id = u.id
+        `;
+
+        let params = [];
+
+        // If not admin, restrict to own sales
+        if (userType !== 'admin') {
+            query += ' WHERE o.seller_id = ?';
+            params.push(userId);
+        }
+
+        query += ' ORDER BY o.created_at DESC';
+
+        const [orders] = await db.query(query, params);
+
+        res.render('dashboard/sales', {
+            title: 'Sales & Orders - AgroLink',
+            orders,
+            currentPage: 'sales'
+        });
+    } catch (error) {
+        console.error('Sales page error:', error);
+        res.render('error', {
+            title: 'Error',
+            message: 'Unable to load sales page'
+        });
+    }
+});
+
+// Manage Users page (Admin only)
+router.get('/users', isAuthenticated, async (req, res) => {
+    try {
+        // Simple check for admin role
+        if (req.session.user.userType !== 'admin') {
+            return res.redirect('/dashboard');
+        }
+
+        const [users] = await db.query(`
+            SELECT id, fullname, email, phone, user_type, created_at 
+            FROM users 
+            ORDER BY created_at DESC
+        `);
+
+        res.render('dashboard/users', {
+            title: 'Manage Users - AgroLink',
+            users,
+            currentPage: 'users'
+        });
+    } catch (error) {
+        console.error('Users page error:', error);
+        res.render('error', {
+            title: 'Error',
+            message: 'Unable to load users page'
+        });
+    }
+});
+
+
 module.exports = router;

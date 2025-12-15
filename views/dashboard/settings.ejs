@@ -17,107 +17,72 @@
 
         <main>
             <div class="dashboard-container">
-                <aside class="dashboard-sidebar">
-                    <div class="sidebar-header">
-                        <i class="fas fa-user-circle user-avatar"></i>
-                        <div class="user-info">
-                            <h3>Settings</h3>
-                            <p>
-                                <%= user.fullname %>
-                            </p>
-                            <span class="user-badge">
-                                <%= user.userType.charAt(0).toUpperCase() + user.userType.slice(1) %>
-                            </span>
+                <%- include('../partials/sidebar', { page: 'settings' }) %>
+
+                    <div class="dashboard-content">
+                        <div class="dashboard-header">
+                            <h1>Account Settings</h1>
+                        </div>
+
+                        <div class="dashboard-section">
+                            <% if (error) { %>
+                                <div class="alert alert-error">
+                                    <%= error %>
+                                </div>
+                                <% } %>
+
+                                    <% if (success) { %>
+                                        <div class="alert alert-success">
+                                            <%= success %>
+                                        </div>
+                                        <% } %>
+
+                                            <form action="/dashboard/settings" method="POST" class="settings-form">
+                                                <div class="form-section">
+                                                    <h2 class="section-heading">
+                                                        <i class="fas fa-user"></i> Personal Information
+                                                    </h2>
+
+                                                    <div class="form-group">
+                                                        <label for="fullname" class="form-label">Full Name</label>
+                                                        <input type="text" id="fullname" name="fullname"
+                                                            class="form-control" value="<%= userData.fullname %>"
+                                                            required>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="email" class="form-label">Email Address</label>
+                                                        <input type="email" id="email" name="email" class="form-control"
+                                                            value="<%= userData.email %>" disabled>
+                                                        <small style="color: var(--gray-500);">Email cannot be
+                                                            changed</small>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="phone" class="form-label">Phone Number</label>
+                                                        <input type="tel" id="phone" name="phone" class="form-control"
+                                                            value="<%= userData.phone || '' %>">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="form-label">Account Type</label>
+                                                        <input type="text" class="form-control"
+                                                            value="<%= userData.user_type.charAt(0).toUpperCase() + userData.user_type.slice(1) %>"
+                                                            disabled>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-actions">
+                                                    <button type="submit" class="btn btn-primary btn-lg">
+                                                        <i class="fas fa-save"></i> Save Changes
+                                                    </button>
+                                                    <a href="/dashboard" class="btn btn-outline">
+                                                        <i class="fas fa-times"></i> Cancel
+                                                    </a>
+                                                </div>
+                                            </form>
                         </div>
                     </div>
-
-                    <nav class="sidebar-nav">
-                        <a href="/dashboard" class="nav-item">
-                            <i class="fas fa-chart-line"></i>
-                            <span>Overview</span>
-                        </a>
-                        <a href="/market" class="nav-item">
-                            <i class="fas fa-store"></i>
-                            <span>Marketplace</span>
-                        </a>
-                        <a href="/market/add/new" class="nav-item">
-                            <i class="fas fa-plus-circle"></i>
-                            <span>Add Product</span>
-                        </a>
-                        <a href="/dashboard/settings" class="nav-item active">
-                            <i class="fas fa-cog"></i>
-                            <span>Settings</span>
-                        </a>
-                        <a href="/auth/logout" class="nav-item">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>Logout</span>
-                        </a>
-                    </nav>
-                </aside>
-
-                <div class="dashboard-content">
-                    <div class="dashboard-header">
-                        <h1>Account Settings</h1>
-                    </div>
-
-                    <div class="dashboard-section">
-                        <% if (error) { %>
-                            <div class="alert alert-error">
-                                <%= error %>
-                            </div>
-                            <% } %>
-
-                                <% if (success) { %>
-                                    <div class="alert alert-success">
-                                        <%= success %>
-                                    </div>
-                                    <% } %>
-
-                                        <form action="/dashboard/settings" method="POST" class="settings-form">
-                                            <div class="form-section">
-                                                <h2 class="section-heading">
-                                                    <i class="fas fa-user"></i> Personal Information
-                                                </h2>
-
-                                                <div class="form-group">
-                                                    <label for="fullname" class="form-label">Full Name</label>
-                                                    <input type="text" id="fullname" name="fullname"
-                                                        class="form-control" value="<%= userData.fullname %>" required>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label for="email" class="form-label">Email Address</label>
-                                                    <input type="email" id="email" name="email" class="form-control"
-                                                        value="<%= userData.email %>" disabled>
-                                                    <small style="color: var(--gray-500);">Email cannot be
-                                                        changed</small>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label for="phone" class="form-label">Phone Number</label>
-                                                    <input type="tel" id="phone" name="phone" class="form-control"
-                                                        value="<%= userData.phone || '' %>">
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="form-label">Account Type</label>
-                                                    <input type="text" class="form-control"
-                                                        value="<%= userData.user_type.charAt(0).toUpperCase() + userData.user_type.slice(1) %>"
-                                                        disabled>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-actions">
-                                                <button type="submit" class="btn btn-primary btn-lg">
-                                                    <i class="fas fa-save"></i> Save Changes
-                                                </button>
-                                                <a href="/dashboard" class="btn btn-outline">
-                                                    <i class="fas fa-times"></i> Cancel
-                                                </a>
-                                            </div>
-                                        </form>
-                    </div>
-                </div>
             </div>
 
             <!-- Mobile Sidebar Toggle -->

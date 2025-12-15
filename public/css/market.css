@@ -29,6 +29,7 @@
     display: flex;
     gap: var(--spacing-lg);
     flex-wrap: wrap;
+    color: var(--charcoal-black);
 }
 
 .search-box {
@@ -88,10 +89,12 @@
 
 .product-card {
     background: var(--white);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-xl);
     overflow: hidden;
     box-shadow: var(--shadow-md);
+    border: 1px solid var(--gray-200);
     transition: all var(--transition-base);
+    color: var(--charcoal-black);
 }
 
 .product-card:hover {

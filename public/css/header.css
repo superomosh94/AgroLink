@@ -1,9 +1,11 @@
 .header {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.95) 0%, rgba(6, 78, 59, 0.95) 100%);
+    backdrop-filter: blur(10px);
     box-shadow: var(--shadow-md);
     position: sticky;
     top: 0;
     z-index: var(--z-sticky);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .navbar-content {
@@ -41,25 +43,23 @@
 }
 
 .nav-link {
-    color: var(--white);
+    color: rgba(255, 255, 255, 0.85);
     font-weight: var(--font-weight-medium);
-    font-size: var(--font-size-base);
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-full);
     transition: all var(--transition-base);
     position: relative;
+    letter-spacing: 0.01em;
+}
+
+.nav-link:hover {
+    color: var(--white);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background: var(--secondary);
-    transition: all var(--transition-base);
-    transform: translateX(-50%);
+    display: none;
 }
 
 .nav-link:hover {

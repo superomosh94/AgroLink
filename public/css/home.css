@@ -136,10 +136,12 @@
 .feature-card {
     background: var(--white);
     padding: var(--spacing-2xl);
-    border-radius: var(--radius-xl);
+    border-radius: var(--radius-2xl);
     box-shadow: var(--shadow-md);
     transition: all var(--transition-base);
     text-align: center;
+    border: 1px solid var(--gray-100);
+    color: var(--charcoal-black);
 }
 
 .feature-card:hover {

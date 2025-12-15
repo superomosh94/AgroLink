@@ -8,6 +8,15 @@
     background: linear-gradient(135deg, var(--gray-800) 0%, var(--gray-900) 100%);
     padding: var(--spacing-xl);
     color: var(--white);
+    transition: all var(--transition-base);
+}
+
+/* Admin Specific Sidebar Styling */
+body:has(.user-badge:contains("Admin")) .dashboard-sidebar,
+.dashboard-sidebar.admin-theme {
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+    /* Indigo/Deep Blue for Admin */
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .sidebar-header {
@@ -111,6 +120,7 @@
     display: flex;
     gap: var(--spacing-lg);
     transition: all var(--transition-base);
+    color: var(--charcoal-black);
 }
 
 .stat-card:hover {
@@ -183,6 +193,7 @@
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-md);
     margin-bottom: var(--spacing-xl);
+    color: var(--charcoal-black);
 }
 
 .section-title {
