@@ -23,6 +23,11 @@
             <i class="fas fa-chart-line"></i>
             <span>Overview</span>
         </a>
+        <a href="/dashboard/messages"
+            class="nav-item <%= typeof page !== 'undefined' && page === 'messages' ? 'active' : '' %>">
+            <i class="fas fa-envelope"></i>
+            <span>Messages</span>
+        </a>
 
         <!-- Buyer Links -->
         <% if (user && user.userType==='buyer' ) { %>

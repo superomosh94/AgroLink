@@ -134,7 +134,120 @@
                             <% } %>
                 </div>
             </section>
+
+            <!-- Product Quick View Modal -->
+            <div id="productModal" class="modal-overlay">
+                <div class="modal-content">
+                    <button class="close-modal" onclick="closeModal()">&times;</button>
+                    <div class="modal-body">
+                        <div class="modal-image-col">
+                            <img id="modalImage" src="" alt="Product" class="modal-image">
+                            <!-- Fallback icon container could go here if needed -->
+                        </div>
+                        <div class="modal-info-col">
+                            <div class="modal-header">
+                                <span id="modalCategory" class="modal-category"></span>
+                                <h2 id="modalTitle" class="modal-title"></h2>
+                                <div class="modal-seller">
+                                    <i class="fas fa-store"></i> <span id="modalSeller"></span>
+                                </div>
+                            </div>
+
+                            <div class="modal-price-section">
+                                <span id="modalPrice" class="modal-price"></span>
+                                <span id="modalStock" class="modal-stock-badge"></span>
+                            </div>
+
+                            <p id="modalDescription" class="modal-description"></p>
+
+                            <div class="modal-meta-grid">
+                                <div class="modal-meta-item">
+                                    <i class="fas fa-map-marker-alt"></i> <span id="modalLocation"></span>
+                                </div>
+                                <div class="modal-meta-item">
+                                    <i class="fas fa-box"></i> <span id="modalUnit"></span>
+                                </div>
+                            </div>
+
+                            <div class="modal-actions">
+                                <a id="modalViewLink" href="#" class="btn btn-primary btn-block">View Full Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
+
+        <script>
+            // Store products in a global object for easy access
+            const productsMap = {};
+            
+            <% products.forEach(function (p) { %>
+                productsMap[<%= p.id %>] = {
+                    id: <%= p.id %>,
+                        name: "<%= p.name %>", // EJS automatically escapes by default? No, careful. 
+                            // Let's use JSON.stringify for safety
+                            name: <% - JSON.stringify(p.name) %>,
+                                price: <%= p.price %>,
+                                    image: <% - JSON.stringify(p.image_url) %>,
+                                        category: <% - JSON.stringify(p.category) %>,
+                                            seller: <% - JSON.stringify(p.seller_name) %>,
+                                                stock: <%= p.stock_quantity %>,
+                                                    unit: <% - JSON.stringify(p.unit) %>,
+                                                        location: <% - JSON.stringify(p.location) %>,
+                                                            description: <% - JSON.stringify(p.description) %>
+                };
+            <% }); %>
+
+                function openProductModal(id) {
+                    const data = productsMap[id];
+                    if (!data) return;
+
+                    const modal = document.getElementById('productModal');
+
+                    // Populate data
+                    document.getElementById('modalImage').src = data.image || '/images/default-product.png';
+                    document.getElementById('modalCategory').textContent = data.category;
+                    document.getElementById('modalTitle').textContent = data.name;
+                    document.getElementById('modalSeller').textContent = data.seller;
+                    document.getElementById('modalPrice').textContent = `Ksh ${parseFloat(data.price).toFixed(2)}`;
+                    document.getElementById('modalDescription').textContent = data.description.substring(0, 150) + (data.description.length > 150 ? '...' : '');
+                    document.getElementById('modalLocation').textContent = data.location;
+                    document.getElementById('modalUnit').textContent = `${data.stock} ${data.unit} available`;
+
+                    // Stock Badge
+                    const stockEl = document.getElementById('modalStock');
+                    if (data.stock > 0) {
+                        stockEl.textContent = 'In Stock';
+                        stockEl.className = 'modal-stock-badge success';
+                    } else {
+                        stockEl.textContent = 'Out of Stock';
+                        stockEl.className = 'modal-stock-badge error';
+                    }
+
+                    // Link
+                    const viewLink = document.getElementById('modalViewLink');
+                    if (viewLink) viewLink.href = `/market/${data.id}`;
+
+                    // Show modal
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+
+            function closeModal() {
+                const modal = document.getElementById('productModal');
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            // Close on outside click
+            window.onclick = function (event) {
+                const modal = document.getElementById('productModal');
+                if (event.target === modal) {
+                    closeModal();
+                }
+            }
+        </script>
 
         <%- include('../partials/footer') %>
 

@@ -198,4 +198,73 @@ router.get('/users', isAuthenticated, async (req, res) => {
 });
 
 
+// Messages Inbox
+router.get('/messages', isAuthenticated, async (req, res) => {
+    try {
+        const userId = req.session.user.id;
+
+        const [chats] = await db.query(`
+            SELECT c.id, c.product_id, p.name as product_name, 
+                   u.fullname as other_user_name, u.id as other_user_id,
+                   (SELECT message FROM messages WHERE chat_id = c.id ORDER BY created_at DESC LIMIT 1) as last_message,
+                   (SELECT created_at FROM messages WHERE chat_id = c.id ORDER BY created_at DESC LIMIT 1) as last_message_time
+            FROM chats c
+            JOIN products p ON c.product_id = p.id
+            JOIN users u ON (c.buyer_id = ? AND c.seller_id = u.id) OR (c.seller_id = ? AND c.buyer_id = u.id)
+            WHERE c.buyer_id = ? OR c.seller_id = ?
+            ORDER BY last_message_time DESC
+        `, [userId, userId, userId, userId]);
+
+        res.render('dashboard/inbox', {
+            title: 'Messages - AgroLink',
+            chats,
+            currentPage: 'messages'
+        });
+    } catch (error) {
+        console.error('Inbox error:', error);
+        res.render('error', { title: 'Error', message: 'Unable to load inbox' });
+    }
+});
+
+// Single Conversation View
+router.get('/messages/:id', isAuthenticated, async (req, res) => {
+    try {
+        const chatId = req.params.id;
+        const userId = req.session.user.id;
+
+        // Verify participation
+        const [chat] = await db.query(`
+            SELECT c.*, p.name as product_name, p.price as product_price, p.image_url,
+                   u.fullname as other_user_name, u.id as other_user_id
+            FROM chats c
+            JOIN products p ON c.product_id = p.id
+            JOIN users u ON (c.buyer_id = ? AND c.seller_id = u.id) OR (c.seller_id = ? AND c.buyer_id = u.id)
+            WHERE c.id = ? AND (c.buyer_id = ? OR c.seller_id = ?)
+        `, [userId, userId, chatId, userId, userId]);
+
+        if (chat.length === 0) {
+            return res.redirect('/dashboard/messages');
+        }
+
+        // Get messages
+        const [messages] = await db.query(`
+            SELECT m.*, u.fullname as sender_name
+            FROM messages m
+            JOIN users u ON m.sender_id = u.id
+            WHERE m.chat_id = ?
+            ORDER BY m.created_at ASC
+        `, [chatId]);
+
+        res.render('dashboard/conversation', {
+            title: `Chat with ${chat[0].other_user_name} - AgroLink`,
+            chat: chat[0],
+            messages,
+            currentPage: 'messages'
+        });
+    } catch (error) {
+        console.error('Chat error:', error);
+        res.render('error', { title: 'Error', message: 'Unable to load conversation' });
+    }
+});
+
 module.exports = router;

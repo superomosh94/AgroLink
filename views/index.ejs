@@ -61,48 +61,101 @@
                 </div>
             </section>
 
-            <!-- Features Section -->
-            <section class="features">
+            <!-- Detailed Value Proposition -->
+            <section class="value-prop" style="padding: 100px 0; background: var(--white);">
                 <div class="container">
                     <div class="section-header text-center">
-                        <h2 class="section-title">Why Choose AgroLink?</h2>
-                        <p class="section-description">
-                            Empowering agricultural communities with modern technology
-                        </p>
+                        <h2 class="section-title">A Marketplace for Everyone</h2>
+                        <p class="section-description">Whether you are harvesting or buying, we have tools built just
+                            for you.</p>
                     </div>
 
-                    <div class="grid grid-cols-3">
-                        <div class="feature-card">
-                            <div class="feature-icon">
-                                <i class="fas fa-handshake"></i>
+                    <div class="split-features"
+                        style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
+                        <!-- For Farmers -->
+                        <div class="feature-detail-card"
+                            style="padding: 2rem; background: var(--gray-50); border-radius: 1rem; border-left: 5px solid var(--primary);">
+                            <div class="icon-header"
+                                style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                                <i class="fas fa-tractor" style="font-size: 2rem; color: var(--primary);"></i>
+                                <h3 style="margin:0; font-size: 1.5rem;">For Farmers</h3>
                             </div>
-                            <h3 class="feature-title">Trusted Marketplace</h3>
-                            <p class="feature-text">
-                                Connect with verified buyers and sellers in a secure environment.
-                                Every transaction is protected.
-                            </p>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="margin-bottom: 1rem; display: flex; gap: 10px;">
+                                    <i class="fas fa-check-circle" style="color: var(--success); margin-top: 4px;"></i>
+                                    <span><strong>Direct Market Access:</strong> Skip the middlemen and sell directly to
+                                        consumers at fair prices.</span>
+                                </li>
+                                <li style="margin-bottom: 1rem; display: flex; gap: 10px;">
+                                    <i class="fas fa-check-circle" style="color: var(--success); margin-top: 4px;"></i>
+                                    <span><strong>Inventory Management:</strong> Track your stock, update prices, and
+                                        manage orders easily.</span>
+                                </li>
+                                <li style="margin-bottom: 1rem; display: flex; gap: 10px;">
+                                    <i class="fas fa-check-circle" style="color: var(--success); margin-top: 4px;"></i>
+                                    <span><strong>Verified Seller Status:</strong> Earn trust with a verification badge
+                                        and seller ratings.</span>
+                                </li>
+                            </ul>
+                            <a href="/auth/register" class="btn btn-outline" style="margin-top: 1rem;">Start Selling</a>
                         </div>
 
-                        <div class="feature-card">
-                            <div class="feature-icon">
-                                <i class="fas fa-chart-line"></i>
+                        <!-- For Buyers -->
+                        <div class="feature-detail-card"
+                            style="padding: 2rem; background: var(--gray-50); border-radius: 1rem; border-left: 5px solid var(--secondary);">
+                            <div class="icon-header"
+                                style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                                <i class="fas fa-shopping-basket" style="font-size: 2rem; color: var(--secondary);"></i>
+                                <h3 style="margin:0; font-size: 1.5rem;">For Buyers</h3>
                             </div>
-                            <h3 class="feature-title">Real-time Analytics</h3>
-                            <p class="feature-text">
-                                Track your sales, manage inventory, and get insights with our
-                                powerful dashboard.
-                            </p>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="margin-bottom: 1rem; display: flex; gap: 10px;">
+                                    <i class="fas fa-check-circle" style="color: var(--success); margin-top: 4px;"></i>
+                                    <span><strong>Fresh Produce:</strong> Source high-quality products directly from
+                                        local farms.</span>
+                                </li>
+                                <li style="margin-bottom: 1rem; display: flex; gap: 10px;">
+                                    <i class="fas fa-check-circle" style="color: var(--success); margin-top: 4px;"></i>
+                                    <span><strong>Transparent Pricing:</strong> Compare prices and negotiate directly
+                                        via secure chat.</span>
+                                </li>
+                                <li style="margin-bottom: 1rem; display: flex; gap: 10px;">
+                                    <i class="fas fa-check-circle" style="color: var(--success); margin-top: 4px;"></i>
+                                    <span><strong>Secure Transactions:</strong> Only pay when you are satisfied with the
+                                        product quality.</span>
+                                </li>
+                            </ul>
+                            <a href="/market" class="btn btn-primary" style="margin-top: 1rem;">Start Browsing</a>
                         </div>
+                    </div>
+                </div>
+            </section>
 
-                        <div class="feature-card">
-                            <div class="feature-icon">
-                                <i class="fas fa-mobile-alt"></i>
-                            </div>
-                            <h3 class="feature-title">Mobile Friendly</h3>
-                            <p class="feature-text">
-                                Access AgroLink anywhere, anytime. Our platform works seamlessly
-                                on all devices.
-                            </p>
+            <!-- How It Works Section (Enhanced) -->
+            <section class="how-it-works" style="background: var(--white);">
+                <div class="container">
+                    <div class="section-header text-center">
+                        <h2 class="section-title">How It Works</h2>
+                        <p class="section-description">Simple steps to get started with AgroLink</p>
+                    </div>
+
+                    <div class="steps-grid">
+                        <div class="step-card">
+                            <div class="step-number">01</div>
+                            <h3>Create Account</h3>
+                            <p>Register as a farmer, supplier, or buyer in seconds.</p>
+                        </div>
+                        <div class="step-line"></div>
+                        <div class="step-card">
+                            <div class="step-number">02</div>
+                            <h3>List or Browse</h3>
+                            <p>Sellers post products; Buyers search for deals.</p>
+                        </div>
+                        <div class="step-line"></div>
+                        <div class="step-card">
+                            <div class="step-number">03</div>
+                            <h3>Connect & Trade</h3>
+                            <p>Chat directly and complete secure transactions.</p>
                         </div>
                     </div>
                 </div>

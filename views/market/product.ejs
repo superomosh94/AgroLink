@@ -60,6 +60,15 @@
                                     <i class="fas fa-check-circle"></i> Verified Seller
                                 </span>
                             </div>
+                            <!-- Rating Header -->
+                            <div class="product-rating-header" style="margin-top: 5px; color: var(--secondary);">
+                                <% for(let i=1; i<=5; i++) { %>
+                                    <i class="<%= i <= Math.round(avgRating) ? 'fas' : 'far' %> fa-star"></i>
+                                    <% } %>
+                                        <span style="color: var(--gray-600); margin-left: 5px;">
+                                            (<%= reviewCount %> reviews)
+                                        </span>
+                            </div>
                         </div>
 
                         <div class="price-section">
@@ -138,9 +147,13 @@
                             </div>
 
                             <% if (product.stock_quantity> 0) { %>
-                                <button class="btn btn-primary btn-lg">
-                                    <i class="fas fa-shopping-cart"></i> Contact Seller
-                                </button>
+                                <form action="/chat/start" method="POST" style="display:inline;">
+                                    <input type="hidden" name="productId" value="<%= product.id %>">
+                                    <input type="hidden" name="sellerId" value="<%= product.seller_id %>">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-comment-dots"></i> Message Seller
+                                    </button>
+                                </form>
                                 <% } else { %>
                                     <button class="btn btn-primary btn-lg" disabled>
                                         <i class="fas fa-times"></i> Out of Stock
@@ -151,8 +164,75 @@
                                         </a>
                         </div>
                     </div>
+                    <!-- Reviews Section -->
+                    <div class="reviews-section"
+                        style="margin-top: 40px; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 20px; color: var(--gray-900);">Customer Reviews
+                        </h3>
+
+                        <!-- Write Review Form -->
+                        <% if (locals.user) { %>
+                            <div class="write-review"
+                                style="margin-bottom: 30px; padding-bottom: 30px; border-bottom: 1px solid var(--gray-200);">
+                                <h4 style="margin-bottom: 15px;">Write a Review</h4>
+                                <form action="/market/<%= product.id %>/review" method="POST">
+                                    <div style="margin-bottom: 15px;">
+                                        <label style="display: block; margin-bottom: 5px;">Rating:</label>
+                                        <select name="rating" required
+                                            style="padding: 8px; border-radius: 6px; border: 1px solid var(--gray-300);">
+                                            <option value="5">5 - Excellent</option>
+                                            <option value="4">4 - Very Good</option>
+                                            <option value="3">3 - Good</option>
+                                            <option value="2">2 - Fair</option>
+                                            <option value="1">1 - Poor</option>
+                                        </select>
+                                    </div>
+                                    <div style="margin-bottom: 15px;">
+                                        <label style="display: block; margin-bottom: 5px;">Comment:</label>
+                                        <textarea name="comment" rows="3" required
+                                            style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--gray-300);"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                                </form>
+                            </div>
+                            <% } else { %>
+                                <p style="margin-bottom: 30px;"><a href="/auth/login"
+                                        style="color: var(--primary); text-decoration: underline;">Log in</a> to write a
+                                    review.</p>
+                                <% } %>
+
+                                    <!-- Reviews List -->
+                                    <div class="reviews-list">
+                                        <% if (reviews.length===0) { %>
+                                            <p style="color: var(--gray-500); font-style: italic;">No reviews yet. Be
+                                                the first to review!</p>
+                                            <% } else { %>
+                                                <% reviews.forEach(function(review) { %>
+                                                    <div class="review-item" style="margin-bottom: 20px;">
+                                                        <div class="review-header"
+                                                            style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                                            <strong>
+                                                                <%= review.user_name %>
+                                                            </strong>
+                                                            <div class="stars" style="color: var(--secondary);">
+                                                                <% for(let i=1; i<=5; i++) { %>
+                                                                    <i class="<%= i <= review.rating ? 'fas' : 'far' %> fa-star"
+                                                                        style="font-size: 0.8rem;"></i>
+                                                                    <% } %>
+                                                            </div>
+                                                        </div>
+                                                        <p style="color: var(--gray-700); line-height: 1.5;">
+                                                            <%= review.comment %>
+                                                        </p>
+                                                        <small style="color: var(--gray-400);">
+                                                            <%= new Date(review.created_at).toLocaleDateString() %>
+                                                        </small>
+                                                    </div>
+                                                    <% }); %>
+                                                        <% } %>
+                                    </div>
+                    </div>
                 </div>
-            </div>
         </main>
 
         <%- include('../partials/footer') %>

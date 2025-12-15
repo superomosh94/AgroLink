@@ -97,9 +97,28 @@ router.get('/:id', async (req, res) => {
 
         const product = products[0];
 
+        // Fetch Reviews and Average
+        const [reviews] = await db.query(`
+            SELECT r.*, u.fullname as user_name 
+            FROM reviews r 
+            JOIN users u ON r.user_id = u.id 
+            WHERE r.product_id = ? 
+            ORDER BY r.created_at DESC
+        `, [productId]);
+
+        // Calculate Stats
+        let avgRating = 0;
+        if (reviews.length > 0) {
+            const sum = reviews.reduce((acc, curr) => acc + curr.rating, 0);
+            avgRating = (sum / reviews.length).toFixed(1);
+        }
+
         res.render('market/product', {
             title: `${product.name} - AgroLink`,
-            product
+            product,
+            reviews,
+            avgRating,
+            reviewCount: reviews.length
         });
     } catch (error) {
         console.error('Product detail error:', error);
@@ -107,6 +126,34 @@ router.get('/:id', async (req, res) => {
             title: 'Error',
             message: 'Unable to load product details'
         });
+    }
+});
+
+// Submit Review
+router.post('/:id/review', async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/auth/login');
+    }
+
+    try {
+        const productId = req.params.id;
+        const userId = req.session.user.id;
+        const { rating, comment } = req.body;
+
+        if (!rating || rating < 1 || rating > 5) {
+            return res.status(400).send('Invalid rating');
+        }
+
+        await db.query(`
+            INSERT INTO reviews (product_id, user_id, rating, comment) 
+            VALUES (?, ?, ?, ?)
+        `, [productId, userId, rating, comment]);
+
+        res.redirect(`/market/${productId}`);
+
+    } catch (error) {
+        console.error('Submit review error:', error);
+        res.status(500).send('Unable to submit review');
     }
 });
 
